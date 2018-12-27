@@ -16,7 +16,7 @@ namespace Steam_Library_Manager
     {
         public static Main FormAccessor;
         public Framework.AsyncObservableCollection<string> TaskManager_Logs = new Framework.AsyncObservableCollection<string>();
-        //Framework.Network.Server SLMServer = new Framework.Network.Server();
+        Framework.Network.Server SLMServer = new Framework.Network.Server();
 
         public Main()
         {
@@ -113,22 +113,22 @@ namespace Steam_Library_Manager
 
         private void AppSortingMethod_SelectionChanged(object sender, SelectionChangedEventArgs e) => Functions.App.UpdateAppPanel(Definitions.SLM.CurrentSelectedLibrary);
 
-        //private void GetIPButton_Click(object sender, RoutedEventArgs e) => Functions.Network.UpdatePublicIP();
+        private void RefreshIPList(object sender, RoutedEventArgs e) => ListenIPAdresses.ItemsSource = Functions.Network.GetIpAdresses();
 
-        //private void GetPortButton_Click(object sender, RoutedEventArgs e) => Properties.Settings.Default.ListenPort = Functions.Network.GetAvailablePort();
+        private void GetPortButton_Click(object sender, RoutedEventArgs e) => Properties.Settings.Default.ListenPort = Functions.Network.GetAvailablePort();
 
-        //private void ToggleSLMServerButton_Click(object sender, RoutedEventArgs e)
-        //{
-        //    //ToggleSLMServer.Content = "Stop Server";
-        //    //SLMServer.StartServer();
-        //}
+        private void ToggleSLMServerButton_Click(object sender, RoutedEventArgs e)
+        {
+            ToggleSLMServer.Content = "Stop Server";
+            SLMServer.StartServer();
+        }
 
-        //private void Button_Click(object sender, RoutedEventArgs e)
-        //{
-        //    Framework.Network.Client SLMClient = new Framework.Network.Client();
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            Framework.Network.Client SLMClient = new Framework.Network.Client();
 
-        //    SLMClient.ConnectToServer();
-        //}
+            SLMClient.ConnectToServer();
+        }
 
         private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
         {

@@ -57,7 +57,7 @@
 
                     <!-- ListView: App Panel -->
                     <Forms:AppView x:Name="AppView" />
-                    
+
                     <!-- TextBox: Search -->
                     <TextBox Controls:TextBoxHelper.Watermark="Search in selected library" Controls:TextBoxHelper.UseFloatingWatermark="True" Controls:TextBoxHelper.ClearTextButton="True" Margin="205,0,0,10" VerticalContentAlignment="Center" TextWrapping="Wrap" Height="35" VerticalAlignment="Bottom" Text="{SLM:SettingBinding SearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextChanged="TextBox_TextChanged" />
                 </Grid>
@@ -70,36 +70,32 @@
             <Controls:MetroTabItem Header="Library Cleaner">
                 <Forms:LibraryCleanerView x:Name="LibraryCleanerView" />
             </Controls:MetroTabItem>
-            <!-- TBC: SLM Server
-            <TabItem Padding="30, 10">
-                <TabItem.Header>
-                    <TextBlock Text="SLM Server" FontSize="15" />
-                </TabItem.Header>
+            <!-- TBC: SLM Server -->
+            <Controls:MetroTabItem Header="SLM Server">
                 <Grid Background="White">
-                    <Label Content="Listen IP:" Margin="10,10,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" />
-                    <TextBox HorizontalAlignment="Left" Margin="104,10,0,0" VerticalAlignment="Top" Width="210" Text="{slm:SettingBinding ListenIP}" Height="22" />
-                    <Button Content="Get IP" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="320,10,0,0" Width="68" Height="22" Click="GetIPButton_Click" />
+                    <ComboBox Name="ListenIPAdresses" Controls:TextBoxHelper.Watermark="Listen IP" Controls:TextBoxHelper.UseFloatingWatermark="True" HorizontalAlignment="Left" Height="40"
+                                      Margin="10,10,0,0" VerticalAlignment="Top" Width="240" SelectedItem="{SLM:SettingBinding ListenIP, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEditable="True" />
+                    <Button Content="Refresh IP List" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="255,13,0,0" Width="100" Height="30" Click="RefreshIPList" />
 
-                    <Label Content="Listen Port:" Margin="10,37,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" />
-                    <TextBox HorizontalAlignment="Left" Margin="104,37,0,0" VerticalAlignment="Top" Width="210" Text="{slm:SettingBinding ListenPort}" Height="22" />
-                    <Button Content="Get Port" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="320,37,0,0" Width="68" Height="22" Click="GetPortButton_Click" />
+                    <Label Content="Listen Port:" Margin="10,55,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                    <TextBox HorizontalAlignment="Left" Margin="88,55,0,0" VerticalAlignment="Top" Width="162" Text="{SLM:SettingBinding ListenPort}" Height="22" />
+                    <Button Content="Get Port" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="255,55,0,0" Width="100" Height="26" Click="GetPortButton_Click" />
 
-                    <Label Content="Server Status:" Margin="10,63,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" />
-                    <Label Name="ServerStatus" Content="" Margin="104,63,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Width="284" />
+                    <Label Content="Server Status:" Margin="10,93,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                    <Label Name="ServerStatus" Content="" Margin="102,93,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Width="284" />
 
-                    <Button Name="ToggleSLMServer" Content="Start Server" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,89,0,0" Width="68" Height="22" Click="ToggleSLMServerButton_Click" />
+                    <Button Name="ToggleSLMServer" Content="Start Server" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,125,0,0" Width="90" Height="22" Click="ToggleSLMServerButton_Click" />
 
                     <Label Content="IP:" Margin="589,6,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" />
-                    <TextBox Margin="617,10,67,0" VerticalAlignment="Top" Text="{slm:SettingBinding IPToConnect}" Height="22" />
+                    <TextBox Margin="617,10,67,0" VerticalAlignment="Top" Text="{SLM:SettingBinding IPToConnect}" Height="22" />
 
                     <Label Content="Port:" Margin="578,33,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" />
-                    <TextBox Margin="617,37,67,0" VerticalAlignment="Top" Text="{slm:SettingBinding PortToConnect}" Height="22" />
+                    <TextBox Margin="617,37,67,0" VerticalAlignment="Top" Text="{SLM:SettingBinding PortToConnect}" Height="22" />
                     <Button Content="Connect" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,21,10,0" Width="52" Height="22" Click="Button_Click" />
                     <Label Content="Status:" Margin="567,63,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" />
                     <Label x:Name="ConnectionStatus" Content="" Margin="617,64,10,0" VerticalAlignment="Top" />
                 </Grid>
-            </TabItem>
-            -->
+            </Controls:MetroTabItem>
             <!-- Tab: Settings -->
             <Controls:MetroTabItem Header="Settings" Name="TabItem_Settings">
                 <Forms:SettingsView x:Name="SettingsView" />

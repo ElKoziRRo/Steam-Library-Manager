@@ -14,6 +14,7 @@ namespace Steam_Library_Manager.Framework
          * The stuff here doesn't represents the things in my mind and subject to change hardly
          * Just skip this file until it's ready, really.
          */
+
         public class Client
         {
             private Socket ClientSocket;
@@ -22,9 +23,26 @@ namespace Steam_Library_Manager.Framework
 
             public void ConnectToServer()
             {
-                ClientSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+                try
+                {
+                    if (string.IsNullOrEmpty(Properties.Settings.Default.IPToConnect))
+                    {
+                        throw new Exception("Server IP is not set.");
+                    }
 
-                ClientSocket.BeginConnect(new IPEndPoint(IPAddress.Parse(Properties.Settings.Default.IPToConnect), Properties.Settings.Default.PortToConnect), new AsyncCallback(ServerCallback), null);
+                    if (Properties.Settings.Default.PortToConnect <= 0)
+                    {
+                        throw new Exception("Server Port is not set.");
+                    }
+
+                    ClientSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+
+                    ClientSocket.BeginConnect(new IPEndPoint(IPAddress.Parse(Properties.Settings.Default.IPToConnect), Properties.Settings.Default.PortToConnect), new AsyncCallback(ServerCallback), null);
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine(ex);
+                }
             }
 
             private void ServerCallback(IAsyncResult ar)
@@ -92,9 +110,9 @@ namespace Steam_Library_Manager.Framework
                     }
                     else
                     {
-                        if (String.IsNullOrEmpty(Properties.Settings.Default.ListenIP))
+                        if (string.IsNullOrEmpty(Properties.Settings.Default.ListenIP))
                         {
-                            Functions.Network.UpdatePublicIP();
+                            Functions.Network.GetPublicIP();
                         }
 
                         if (Properties.Settings.Default.ListenPort == 0)
@@ -107,11 +125,13 @@ namespace Steam_Library_Manager.Framework
                             throw new Exception($"Port is in use! Port: {Properties.Settings.Default.ListenPort} - Available Port: {Functions.Network.GetAvailablePort()}");
                         }
 
+                        Debug.WriteLine(Properties.Settings.Default.ListenIP);
+
                         ServerSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
                         ServerSocket.Bind(new IPEndPoint(IPAddress.Parse(Properties.Settings.Default.ListenIP), Properties.Settings.Default.ListenPort));
                         ServerSocket.Listen(0);
 
-                        //Main.Accessor.ServerStatus.Content = $"Listening on {Properties.Settings.Default.ListenIP} Port: {Properties.Settings.Default.ListenPort}";
+                        Main.FormAccessor.ServerStatus.Content = $"Listening on {Properties.Settings.Default.ListenIP} Port: {Properties.Settings.Default.ListenPort}";
 
                         Thread ServerHandler = new Thread(HandleServer);
                         ServerHandler.Start();
@@ -125,7 +145,7 @@ namespace Steam_Library_Manager.Framework
 
             private void HandleServer()
             {
-                while(ServerSocket != null)
+                while (ServerSocket != null)
                 {
                     SocketHandler.Reset();
 
@@ -144,8 +164,6 @@ namespace Steam_Library_Manager.Framework
                 DoRecvFromClient();
 
                 Debug.WriteLine(((IPEndPoint)(ClientSocket.RemoteEndPoint)).Address);
-
-                SendToClient(File.ReadAllBytes(@"E:\Kurulum Dosyaları\Program\SQLEXPRWT_x64_ENU.exe"));
             }
 
             private void DoRecvFromClient()
@@ -181,7 +199,6 @@ namespace Steam_Library_Manager.Framework
                     Debug.WriteLine(ex);
                 }
             }
-
         }
     }
 }

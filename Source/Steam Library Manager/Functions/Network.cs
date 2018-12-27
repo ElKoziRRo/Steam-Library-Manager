@@ -6,13 +6,22 @@ namespace Steam_Library_Manager.Functions
 {
     internal static class Network
     {
-        public static void UpdatePublicIP()
+        public static string GetPublicIP()
         {
             try
             {
-                Properties.Settings.Default.ListenIP = new WebClient().DownloadString("http://icanhazip.com").Replace("\n", "");
+                return new WebClient().DownloadString("http://icanhazip.com").Replace("\n", "");
             }
-            catch { }
+            catch { return "127.0.0.1"; }
+        }
+
+        public static List<string> GetIpAdresses()
+        {
+            var iplist = Dns.GetHostEntry(Dns.GetHostName()).AddressList.Where(x => x.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork).Select(x => x.ToString()).ToList();
+
+            iplist.Add(GetPublicIP());
+
+            return iplist;
         }
 
         public static int GetAvailablePort()
@@ -22,7 +31,7 @@ namespace Steam_Library_Manager.Functions
                 List<int> usedPorts = System.Net.NetworkInformation.IPGlobalProperties.GetIPGlobalProperties().GetActiveTcpListeners().Select(p => p.Port).ToList();
                 int unusedPort = 0;
 
-                for (int port = 10000; port < 20000; port++)
+                for (int port = 50000; port < 64000; port++)
                 {
                     if (!usedPorts.Contains(port))
                     {
